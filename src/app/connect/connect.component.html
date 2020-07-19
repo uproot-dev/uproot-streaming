@@ -1,0 +1,55 @@
+<main>
+	<div class="bg-white">
+		<div class="m-5 p-3"></div>
+		<div class="m-5 p-3"></div>
+		<div class="d-flex justify-content-center align-items-center ">
+			<form role="form">
+				<div class="card shadow border-0">
+					<div class="card-header bg-default" style="text-align: center;">
+						<h4 class="text-white">Encrypted Streaming</h4>
+					</div>
+					<div class="card-body bg-secondary">
+						<a *ngIf="select == 'none'" type="submit" (click)="select = 'conect'" class="btn btn-default text-white btn-block">
+							<span class="btn-inner--text">Connect to channel</span>
+						</a>
+						<div *ngIf="select == 'conect'" class="row mt-2">
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="input-group input-group-alternative mb-3 d-flex">
+										<input id="channelAddress" #channelAddress class="form-control" placeholder="Channel Address" type="text" style="text-align: center;" />
+									</div>
+								</div>
+								<div class="d-flex justify-content-center align-items-center">
+									<a type="submit" (click)="select = 'none'" class="btn btn-default text-white p-2 m-2">
+										<span class="btn-inner--text">Back</span>
+									</a>
+									<a type="submit" (click)="connectChannel(channelAddress.value)" class="btn btn-default text-white p-2 m-2">
+										<span class="btn-inner--text">Connect</span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<a *ngIf="select == 'none'" type="submit" (click)="select = 'stream'" class="btn btn-default text-white btn-block">
+							<span class="btn-inner--text">Start streaming</span>
+						</a>
+						<div *ngIf="select == 'stream'" class="row mt-2">
+							<div class="col-md-12">
+								<div class="alert alert-default" style="text-align: center;" role="alert">
+									<strong class="text-bold text-white">You need to connect your wallet to start streaming</strong>
+								</div>
+								<div class="d-flex justify-content-center align-items-center">
+									<a type="submit" (click)="select = 'none'" class="btn btn-default text-white p-2 m-2">
+										<span class="btn-inner--text">Back</span>
+									</a>
+									<a type="submit" (click)="connectWallet()" class="btn btn-default text-white p-2 m-2">
+										<span class="btn-inner--text">Connect</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>

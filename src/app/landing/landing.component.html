@@ -1,1 +1,13 @@
-<p>landing works!</p>
+<main>
+  <div class="single-page">
+    <div class="connect" *ngIf="_mode == 'connect'">
+      <app-connect></app-connect>
+    </div>
+    <div class="connect" *ngIf="_mode == 'stream'">
+      <app-stream></app-stream>
+    </div>
+    <div class="connect" *ngIf="_mode == 'watch'">
+      <app-watch></app-watch>
+    </div>
+  </div>
+</main>

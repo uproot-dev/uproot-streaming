@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingComponent implements OnInit {
 
+  _mode = 'connect';
+
   constructor() { }
 
   ngOnInit(): void {
