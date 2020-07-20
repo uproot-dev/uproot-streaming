@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StreamComponent implements OnInit {
 
+  connection = false;
+
+  play = false;
+  showChat = false;
+  mic = false;
+  video = false;
+  screen = false;
+
   constructor() { }
 
   ngOnInit(): void {

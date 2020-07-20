@@ -1,12 +1,12 @@
 <main>
   <div class="single-page">
-    <div class="connect" *ngIf="_mode == 'connect'">
+    <div class="connect" *ngIf="globals.mode == 'connect'">
       <app-connect></app-connect>
     </div>
-    <div class="connect" *ngIf="_mode == 'stream'">
+    <div class="connect" *ngIf="globals.mode == 'stream'">
       <app-stream></app-stream>
     </div>
-    <div class="connect" *ngIf="_mode == 'watch'">
+    <div class="connect" *ngIf="globals.mode == 'watch'">
       <app-watch></app-watch>
     </div>
   </div>

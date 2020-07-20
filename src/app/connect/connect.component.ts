@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Globals } from '../app.globals';
 
 @Component({
 	selector: 'app-connect',
@@ -9,7 +10,7 @@ export class ConnectComponent implements OnInit {
 
   select = 'none'
 
-	constructor() {}
+	constructor(public globals: Globals) {}
 
 	ngOnInit(): void {}
 
@@ -19,5 +20,7 @@ export class ConnectComponent implements OnInit {
 
   connectWallet(): any {}
 
-	startStreaming(): any {}
+	startStreaming(): any {
+    this.globals.mode = 'stream';
+  }
 }

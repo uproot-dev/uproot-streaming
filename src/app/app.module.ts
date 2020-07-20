@@ -9,6 +9,7 @@ import { ConnectComponent } from './connect/connect.component';
 import { StreamComponent } from './stream/stream.component';
 import { WatchComponent } from './watch/watch.component';
 import { ChatComponent } from './chat/chat.component';
+import { Globals } from './app.globals';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { ChatComponent } from './chat/chat.component';
     AppRoutingModule,
     NgbModule
   ],
-  providers: [],
+  providers: [Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
