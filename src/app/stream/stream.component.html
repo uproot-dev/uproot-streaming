@@ -1,82 +1,82 @@
 <div class="container">
-	<div class="header">
-		<div class="bg-default border-2">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6 py-2">
-						<p>Header</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="body">
-		<br /><br /><br /><br /><br /><br />
-		<div class="row">
-			<div [ngClass]="{ 'col-md-8': showChat, 'col-md-12': !showChat }">
-				<div class="card-body bg-default">
-					Body
-				</div>
-			</div>
-			<div *ngIf="showChat" class="col-md-4">
-				<div class="card-body bg-default">
-					Chat
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="footer">
-		<div class="bg-default border-2">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 py-2">
-						<div class="mb-5 d-md-flex justify-content-center align-items-center">
-							<a *ngIf="!play" (click)="play = !play" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-play" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="play" (click)="play = !play" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-stop" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="!showChat" (click)="showChat = !showChat" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-commenting-o" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="showChat" (click)="showChat = !showChat" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-commenting" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="!mic" (click)="mic = !mic" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-microphone" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="mic" (click)="mic = !mic" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-microphone-slash" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="!video" (click)="video = !video" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-video-camera" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="video" (click)="video = !video" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-eye-slash" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="!screen" (click)="screen = !screen" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-desktop" style="font-size: 36px;"></i></span
-							></a>
-							<a *ngIf="screen" (click)="screen = !screen" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-ban" style="font-size: 36px;"></i></span
-							></a>
-							<a (click)="screen = !screen" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-volume-up" style="font-size: 36px;"></i></span
-							></a>
-							<a (click)="(true)" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-key" style="font-size: 36px;"></i></span
-							></a>
-							<a (click)="screen = !screen" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-upload" style="font-size: 36px;"></i></span
-							></a>
-							<a (click)="(true)" class="btn btn-secondary p-2 m-2"
-								><span><i class="fa fa-gears" style="font-size: 36px;"></i></span
-							></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="header">
+        <div class="bg-default border-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 py-2">
+                        <p class="text-white" style="text-align: right;">Connection Status: {{ globals.status }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <br /><br /><br /><br /><br /><br />
+        <div class="row">
+            <div [ngClass]="{ 'col-md-8': showChat, 'col-md-12': !showChat }">
+                <div class="card-body bg-default">
+                    Body
+                </div>
+            </div>
+            <div *ngIf="showChat" class="col-md-4">
+                <div class="card-body bg-default">
+                    Chat
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="bg-default border-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 py-2">
+                        <div class="mb-5 d-md-flex justify-content-center align-items-center">
+                            <a *ngIf="!play" (click)="play = !play" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-play" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="play" (click)="play = !play" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-stop" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="!showChat" (click)="showChat = !showChat" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-commenting-o" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="showChat" (click)="showChat = !showChat" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-commenting" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="!mic" (click)="mic = !mic" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-microphone" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="mic" (click)="mic = !mic" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-microphone-slash" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="!video" (click)="video = !video" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-video-camera" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="video" (click)="video = !video" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-eye-slash" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="!screen" (click)="screen = !screen" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-desktop" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a *ngIf="screen" (click)="screen = !screen" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-ban" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a (click)="(true)" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-key" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a (click)="openModal('file-upload')" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-upload" style="font-size: 36px;"></i></span
+                            ></a>
+                            <a (click)="(true)" class="btn btn-secondary p-2 m-2"
+                                ><span><i class="fa fa-gears" style="font-size: 36px;"></i></span
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<jw-modal id="file-upload">
+<app-file-upload></app-file-upload>
+</jw-modal>

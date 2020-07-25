@@ -1,5 +1,6 @@
 {
   "compileOnSave": false,
+  "allowSyntheticDefaultImports": true,
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

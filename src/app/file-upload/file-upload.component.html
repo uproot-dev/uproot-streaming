@@ -1,0 +1,25 @@
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card card-lift--hover shadow border-0 text-center">
+            <div class="card-header py-2 bg-info">
+                <h6 class="text-white text-uppercase">File Upload</h6>
+            </div>
+            <div class="card-body py-2 bg-secondary">
+                <div class="row justify-content-center align-content-center">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="form-control-file">Select a file to upload </label>
+                            <span>{{ file ? file.name : 'or drag and drop file here' }}</span>
+                            <input type="file" class="file-input" id="form-control-file" />
+                        </div>
+                    </div>
+                    <div *ngIf="file" class="col-md-6">
+                        <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="uploadFile(); closeModal('file-upload')">
+                            <span><i class="fa fa-upload" style="font-size: 36px;"></i></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

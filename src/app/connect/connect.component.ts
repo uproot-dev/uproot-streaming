@@ -1,26 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../app.globals';
+import { ModalService } from '../_modal';
 
 @Component({
-	selector: 'app-connect',
-	templateUrl: './connect.component.html',
-	styleUrls: ['./connect.component.scss'],
+    selector: 'app-connect',
+    templateUrl: './connect.component.html',
+    styleUrls: ['./connect.component.scss'],
 })
 export class ConnectComponent implements OnInit {
+    select = 'none';
 
-  select = 'none'
+    constructor(public globals: Globals, private modalService: ModalService) {}
 
-	constructor(public globals: Globals) {}
+    ngOnInit(): void {}
 
-	ngOnInit(): void {}
+    openModal(id: string) {
+        this.modalService.open(id);
+    }
 
-	connectChannel(address: string): any {
+    closeModal(id: string) {
+        this.modalService.close(id);
+    }
 
-  }
+    connectChannel(address: string): any {}
 
-  connectWallet(): any {}
+    connectWallet(): any {}
 
-	startStreaming(): any {
-    this.globals.mode = 'stream';
-  }
+    startStreaming(): any {
+        this.globals.mode = 'stream';
+    }
 }
