@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ModalService } from '../_modal';
 import { Globals } from '../app.globals';
 import { ethers } from 'ethers';
@@ -16,7 +16,11 @@ import * as CryptoJS from 'crypto-js';
 })
 export class WalletComponent implements OnInit {
     streamerCredentials: ethers.Contract;
-    constructor(private modalService: ModalService, public globals: Globals, public storageService: StorageService) {}
+    passwordWrong = false;
+    tempKey: string;
+    tempSecret: string;
+
+    constructor(private modalService: ModalService, public globals: Globals, public storageService: StorageService, private zone: NgZone) {}
 
     ngOnInit(): void {}
 
@@ -44,41 +48,78 @@ export class WalletComponent implements OnInit {
     }
 
     async checkCredentials() {
-        this.streamerCredentials = new ethers.Contract(environment.credentialsAddress, StreamerCredentials.abi, this.globals.provider);
+        this.streamerCredentials = new ethers.Contract(environment.credentialsAddress, StreamerCredentials.abi, this.globals.provider.getSigner());
         const credentials = await this.streamerCredentials.getCredentials();
-        if (credentials[0].length > 0) {
-            this.globals.status = 'connected';
+        let key = credentials[0];
+        let secret = credentials[1];
+        let password;
+        if (key.length > 0 && secret.length > 0) {
+            this.globals.status = 'password';
+            password = localStorage.getItem('SavedPassword');
+            if (password) {
+                key = this.decryptData(key, password);
+                secret = this.decryptData(secret, password);
+                if (key.length > 0 && secret.length > 0) this.initCredentials(key, secret);
+                else console.warn('Could not unlock credentials with the saved password. Clear cache and try again.');
+            } else {
+                this.tempKey = key;
+                this.tempSecret = secret;
+                this.openModal('input-password');
+            }
         } else {
             this.globals.status = 'registering';
         }
+        this.zone.run(() => {});
+    }
+
+    async unlockCredentials(password: string, save: boolean) {
+        const key = this.decryptData(this.tempKey, password);
+        const secret = this.decryptData(this.tempSecret, password);
+        if (key.length > 0 && secret.length > 0) {
+            const result = await this.initCredentials(key, secret);
+            if (result) {
+                if (save) localStorage.setItem('SavedPassword', password);
+                this.closeModal('input-password');
+                return;
+            }
+        }
+        this.passwordWrong = true;
+    }
+
+    async initCredentials(key: string, secret: string): Promise<boolean> {
+        const result = await this.storageService.initKeys(key, secret);
+        if (!result) return false;
+        this.globals.status = 'connected';
+        return true;
     }
 
     registerCredentials(key: string, secret: string, password: string, save: boolean) {
-        console.log(key, secret, password, save);
-        const test = this.encryptData(key, password);
-        console.log(test);
-        console.log(this.decryptData(test, password));
-        console.log(this.decryptData(test, 'batata'));
-
+        const safeApiKey = this.encryptData(key, password);
+        const safeApiSecret = this.encryptData(secret, password);
+        if (save) localStorage.setItem('SavedPassword', password);
+        this.streamerCredentials.setCredentials(safeApiKey, safeApiSecret).then(
+            () => {
+                this.initCredentials(key, secret);
+            },
+            (err) => console.warn('registerCredentials ' + err)
+        );
     }
 
     encryptData(data: string, secret: string) {
         try {
             return CryptoJS.AES.encrypt(data, secret).toString();
-        } catch (e) {
-            console.warn(e);
+        } catch (err) {
+            console.warn(err);
         }
     }
 
     decryptData(data: string, secret: string) {
         try {
-            const bytes = CryptoJS.AES.decrypt(data, secret);
-            if (bytes.toString()) {
-                return bytes.toString();
-            }
-            return bytes;
-        } catch (e) {
-            console.warn(e);
+            var bytes = CryptoJS.AES.decrypt(data, secret);
+            var originalData = bytes.toString(CryptoJS.enc.Utf8);
+            return originalData;
+        } catch (err) {
+            console.warn(err);
         }
     }
 }

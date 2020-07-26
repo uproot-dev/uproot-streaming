@@ -33,12 +33,12 @@
                             <small id="apiKeyInputHelp" class="form-text text-muted">Check your provider configs to get your keys</small>
                         </div>
                         <div class="form-group">
-                            <label for="apiSecretInput">API Key</label>
+                            <label for="apiSecretInput">API Secret</label>
                             <input #apiSecretInput type="text" class="form-control" id="apiSecretInput" aria-describedby="Api Secret" placeholder="API Secret" />
                             <small id="apiSecretInputHelp" class="form-text text-muted">Your secret is saved encrypted by a password</small>
                         </div>
                         <div class="alert alert-warning" style="text-align: center;" role="alert">
-                            <strong class="text-bold text-white">Warning: we don't save your password. If you loose it, there is no way to recover your credentials!</strong>
+                            <strong class="text-bold text-white">Warning: we don't save your password. If you lose it, there is no way to recover your credentials!</strong>
                         </div>
                         <div class="form-group">
                             <label for="encryptionKey">Password</label>
@@ -55,6 +55,41 @@
                         >
                             Register
                         </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+<jw-modal id="input-password">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">Unlock Credentials</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <form>
+                        <div *ngIf="!passwordWrong" class="alert alert-default" style="text-align: center;" role="alert">
+                            <strong class="text-bold text-white">Input your password to unlock your credentials</strong>
+                        </div>
+                        <div *ngIf="passwordWrong" class="alert alert-warning" style="text-align: center;" role="alert">
+                            <strong class="text-bold text-white">Wrong password. It is impossible to recover your password. If needed, please request new credentials</strong>
+                        </div>
+                        <div class="form-group">
+                            <label for="encryptionKey">Password</label>
+                            <input #encryptionKey2 type="password" class="form-control" id="encryptionKey2" placeholder="Password" />
+                        </div>
+                        <div class="form-check">
+                            <input #savePassword2 type="checkbox" class="form-check-input" id="savePassword2" />
+                            <label class="form-check-label" for="savePassword2">Save password on this device</label>
+                        </div>
+                        <button type="button" class="btn btn-default p-2 m-2" (click)="unlockCredentials(encryptionKey2.value, savePassword2.checked)">
+                            Unlock
+                        </button>
+                        <button *ngIf="passwordWrong" type="button" class="btn btn-default p-2 m-2" (click)="closeModal('input-password'); openModal('register-credentials')">
+                          Reset
+                      </button>
                     </form>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../app.globals';
 import { ModalService } from '../_modal';
+import { StorageService } from '../storage.service';
 
 @Component({
     selector: 'app-connect',
@@ -11,7 +12,7 @@ export class ConnectComponent implements OnInit {
     select = 'none';
     savedState = '';
 
-    constructor(public globals: Globals, private modalService: ModalService) {}
+    constructor(public globals: Globals, private modalService: ModalService, public storageService: StorageService) {}
 
     ngOnInit(): void {}
 
