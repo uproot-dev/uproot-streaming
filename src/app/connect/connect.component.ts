@@ -9,6 +9,7 @@ import { ModalService } from '../_modal';
 })
 export class ConnectComponent implements OnInit {
     select = 'none';
+    savedState = '';
 
     constructor(public globals: Globals, private modalService: ModalService) {}
 
@@ -23,8 +24,6 @@ export class ConnectComponent implements OnInit {
     }
 
     connectChannel(address: string): any {}
-
-    connectWallet(): any {}
 
     startStreaming(): any {
         this.globals.mode = 'stream';

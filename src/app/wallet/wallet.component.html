@@ -18,3 +18,46 @@
         </div>
     </div>
 </jw-modal>
+<jw-modal id="register-credentials">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">Register Credentials</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <form>
+                        <div class="form-group">
+                            <label for="apiKeyInput">API Key</label>
+                            <input #apiKeyInput type="text" class="form-control" id="apiKeyInput" aria-describedby="Api Key" placeholder="API Key" />
+                            <small id="apiKeyInputHelp" class="form-text text-muted">Check your provider configs to get your keys</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="apiSecretInput">API Key</label>
+                            <input #apiSecretInput type="text" class="form-control" id="apiSecretInput" aria-describedby="Api Secret" placeholder="API Secret" />
+                            <small id="apiSecretInputHelp" class="form-text text-muted">Your secret is saved encrypted by a password</small>
+                        </div>
+                        <div class="alert alert-warning" style="text-align: center;" role="alert">
+                            <strong class="text-bold text-white">Warning: we don't save your password. If you loose it, there is no way to recover your credentials!</strong>
+                        </div>
+                        <div class="form-group">
+                            <label for="encryptionKey">Password</label>
+                            <input #encryptionKey type="password" class="form-control" id="encryptionKey" placeholder="Password" />
+                        </div>
+                        <div class="form-check">
+                            <input #savePassword type="checkbox" class="form-check-input" id="savePassword" />
+                            <label class="form-check-label" for="savePassword">Save password on this device</label>
+                        </div>
+                        <button
+                            type="button"
+                            class="btn btn-default p-2"
+                            (click)="registerCredentials(apiKeyInput.value, apiSecretInput.value, encryptionKey.value, savePassword.checked); closeModal('register-credentials')"
+                        >
+                            Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</jw-modal>
