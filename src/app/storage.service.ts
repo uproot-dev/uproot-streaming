@@ -37,7 +37,7 @@ export class StorageService {
         const params = { apiKey: this.apiKey, apiSecret: this.apiSecret, key: key, data: file };
         fleekStorage.upload(params).then(
             (answer) => {
-                console.log(answer);
+                //console.log(answer);
             },
             (err) => console.warn('upload ' + err)
         );

@@ -1,16 +1,39 @@
 <jw-modal id="select-provider">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="flex-grow align-content-center">
             <div class="card card-lift--hover shadow border-0 text-center">
                 <div class="card-header py-2 bg-info">
                     <h6 class="text-white text-uppercase">Choose a provider</h6>
                 </div>
                 <div class="card-body py-2 bg-secondary">
                     <div class="row justify-content-center align-content-center">
-                        <div class="col-md-6">
+                        <div class="flex-grow ">
                             <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="connectMetamask(); closeModal('select-provider')">
                                 <span><img src="../../assets/img/icons/common/metamask.svg" alt="Metamask Icon" width="128" height="128" /></span>
                             </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+<jw-modal id="connect-credentials">
+    <div class="row justify-content-center">
+        <div class="flex-grow align-content-center">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">Connect credentials</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                  <div class="alert alert-default" style="text-align: center;" role="alert">
+                    <strong class="text-bold text-white">Setup your credentials for your storage provider</strong>
+                </div>
+                </div>
+                <div class="card-footer py-2 bg-info">
+                    <div class="row justify-content-center align-content-center">
+                        <div class="flex-grow ">
+                            <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="checkCredentials(); closeModal('connect-credentials')">Connect</button>
                         </div>
                     </div>
                 </div>
@@ -74,7 +97,7 @@
                             <strong class="text-bold text-white">Input your password to unlock your credentials</strong>
                         </div>
                         <div *ngIf="passwordWrong" class="alert alert-warning" style="text-align: center;" role="alert">
-                            <strong class="text-bold text-white">Wrong password. It is impossible to recover your password. If needed, please request new credentials</strong>
+                            <strong class="text-bold text-white">Error: It is impossible to recover your password. If needed, please request new credentials</strong>
                         </div>
                         <div class="form-group">
                             <label for="encryptionKey">Password</label>
@@ -88,8 +111,8 @@
                             Unlock
                         </button>
                         <button *ngIf="passwordWrong" type="button" class="btn btn-default p-2 m-2" (click)="closeModal('input-password'); openModal('register-credentials')">
-                          Reset
-                      </button>
+                            Reset
+                        </button>
                     </form>
                 </div>
             </div>

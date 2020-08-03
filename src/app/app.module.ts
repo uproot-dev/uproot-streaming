@@ -32,7 +32,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     ModalModule,
     NgbModule
   ],
-  providers: [Globals, StorageService],
+  providers: [Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

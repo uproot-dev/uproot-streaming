@@ -6,7 +6,7 @@
             <form role="form">
                 <div class="card shadow border-0">
                     <div class="card-header bg-default" style="text-align: center;">
-                        <h4 class="text-white">Encrypted Streaming </h4>
+                        <h4 class="text-white">Encrypted Streaming</h4>
                     </div>
                     <div class="card-body bg-secondary">
                         <a *ngIf="select == 'none'" type="button" (click)="select = 'conect'" class="btn btn-default text-white btn-block">
@@ -46,10 +46,16 @@
                                 <div *ngIf="globals.status == 'registering'" class="alert alert-default" style="text-align: center;" role="alert">
                                     <strong class="text-bold text-white">Setup your account to start streaming</strong>
                                 </div>
+                                <div *ngIf="globals.status == 'registering-wait'" class="alert alert-default" style="text-align: center;" role="alert">
+                                    <strong class="text-bold text-white">Please wait a while until your transaction completes</strong>
+                                </div>
+                                <div *ngIf="globals.status == 'connected'" class="alert alert-default" style="text-align: center;" role="alert">
+                                    <strong class="text-bold text-white">Connect to your credentials provider</strong>
+                                </div>
                                 <div *ngIf="globals.status == 'password'" class="alert alert-default" style="text-align: center;" role="alert">
                                     <strong class="text-bold text-white">Input a password to unlock your credentials</strong>
                                 </div>
-                                <div *ngIf="globals.status == 'connected'" class="alert alert-default" style="text-align: center;" role="alert">
+                                <div *ngIf="globals.status == 'connectedCredentials'" class="alert alert-default" style="text-align: center;" role="alert">
                                     <strong class="text-bold text-white">Wallet is ready to start streaming</strong>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center">
@@ -62,10 +68,13 @@
                                     <a *ngIf="globals.status == 'registering'" type="button" (click)="openModal('register-credentials')" class="btn btn-default text-white p-2 m-2">
                                         <span class="btn-inner--text">Register</span>
                                     </a>
+                                    <a *ngIf="globals.status == 'connected'" type="button" (click)="openModal('connect-credentials')" class="btn btn-default text-white p-2 m-2">
+                                        <span class="btn-inner--text">Connect</span>
+                                    </a>
                                     <a *ngIf="globals.status == 'password'" type="button" (click)="openModal('select-provider')" class="btn btn-default text-white p-2 m-2">
                                         <span class="btn-inner--text">Retry</span>
                                     </a>
-                                    <a *ngIf="globals.status == 'connected'" type="button" (click)="startStreaming()" class="btn btn-default text-white p-2 m-2">
+                                    <a *ngIf="globals.status == 'connectedCredentials'" type="button" (click)="startStreaming()" class="btn btn-default text-white p-2 m-2">
                                         <span class="btn-inner--text">Stream</span>
                                     </a>
                                 </div>

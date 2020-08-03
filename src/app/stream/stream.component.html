@@ -67,7 +67,7 @@
                             <a (click)="openModal('file-upload')" class="btn btn-secondary p-2 m-2"
                                 ><span><i class="fa fa-upload" style="font-size: 36px;"></i></span
                             ></a>
-                            <a (click)="(true)" class="btn btn-secondary p-2 m-2"
+                            <a (click)="openModal('ens-registry')" class="btn btn-secondary p-2 m-2"
                                 ><span><i class="fa fa-gears" style="font-size: 36px;"></i></span
                             ></a>
                         </div>
@@ -78,5 +78,90 @@
     </div>
 </div>
 <jw-modal id="file-upload">
-<app-file-upload></app-file-upload>
+    <app-file-upload></app-file-upload>
+</jw-modal>
+<jw-modal id="ens-registry">
+    <div class="row justify-content-center">
+        <div class="flex-grow align-content-center">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">ENS Credentials</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <div class="alert alert-default" style="text-align: center;" role="alert">
+                        <strong *ngIf="!hasRecord" class="text-bold text-white">Please configure an ENS record for your streaming</strong>
+                        <strong *ngIf="hasRecord" class="text-bold text-white">Please confirm if this is the right record for this stream:</strong><br />
+                        <strong *ngIf="hasRecord" class="text-bold text-white">{{ ENSRecord }}</strong>
+                    </div>
+                </div>
+                <div class="card-footer py-2 bg-info">
+                    <div>
+                        <button *ngIf="hasRecord" class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="closeModal('ens-registry'); openModal('ens-record')">Confirm</button>
+                        <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="closeModal('ens-registry'); openModal('ens-config')">Configure</button>
+                        <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="closeModal('ens-registry')">Ignore</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+<jw-modal id="ens-config">
+    <div class="row justify-content-center">
+        <div class="flex-grow align-content-center">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">ENS Credentials</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <div *ngIf="ENSFailed" class="alert alert-default" style="text-align: center;" role="alert">
+                        <strong  class="text-bold text-white">Please input a valid unused name</strong>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="nameInput">Stream Channel Name</label>
+                            <input #nameInput type="text" class="form-control" id="nameInput" aria-describedby="ENS Name" placeholder="Name" />
+                            <small id="nameInputHelp" class="form-text text-muted">Please provide a name for your streamer channel</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer py-2 bg-info">
+                    <div>
+                        <button *ngIf="!ENSFailed" class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="configureENSRecord(nameInput.value)">Confirm</button>
+                        <button *ngIf="ENSFailed" class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="configureENSRecord(nameInput.value)">Retry</button>
+                        <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="closeModal('ens-config')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+<jw-modal id="ens-record">
+    <div class="row justify-content-center">
+        <div class="flex-grow align-content-center">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">ENS Record</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <div class="alert alert-default" style="text-align: center;" role="alert">
+                        <strong  class="text-bold text-white">Input your IPFS folder hash</strong>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="folderHashInput">Folder Hash</label>
+                            <input #folderHashInput type="text" class="form-control" id="folderHashInput" aria-describedby="ENS Name" placeholder="Hash" />
+                            <small id="folderHashInputHelp" class="form-text text-muted">Please provide a valid IPFS folder hash</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer py-2 bg-info">
+                    <div>
+                        <button *ngIf="!connection" class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="setENSRecord(folderHashInput.value)">Register</button>
+                        <button *ngIf="connection" class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="setENSRecord(folderHashInput.value)">Update</button>
+                        <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="closeModal('ens-record')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </jw-modal>

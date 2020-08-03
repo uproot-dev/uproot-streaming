@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
+import { ENSService } from './ens.service';
 
 @Injectable()
 export class Globals {
@@ -9,4 +10,10 @@ export class Globals {
     address: string;
     provider: any;
     storageProvider: StorageService;
+    ensProvider: ENSService;
+
+    setProvider(provider: any, signer: boolean) {
+      this.provider = provider;
+      this.ensProvider.configureProvider(provider, signer);
+    }
 }

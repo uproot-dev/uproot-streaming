@@ -20,7 +20,7 @@ export class WalletComponent implements OnInit {
     tempKey: string;
     tempSecret: string;
 
-    constructor(private modalService: ModalService, public globals: Globals, public storageService: StorageService, private zone: NgZone) {}
+    constructor(private modalService: ModalService, public globals: Globals, private zone: NgZone) {}
 
     ngOnInit(): void {}
 
@@ -39,8 +39,8 @@ export class WalletComponent implements OnInit {
             window['ethereum'].enable().then(
                 (accounts) => {
                     this.globals.address = ethers.utils.getAddress(accounts[0]);
-                    this.globals.provider = new ethers.providers.Web3Provider(window['web3'].currentProvider);
-                    this.checkCredentials();
+                    this.globals.setProvider(new ethers.providers.Web3Provider(window['web3'].currentProvider), true);
+                    this.globals.status = 'connected';
                 },
                 (err) => console.warn(err)
             );
@@ -72,28 +72,34 @@ export class WalletComponent implements OnInit {
         this.zone.run(() => {});
     }
 
-    async unlockCredentials(password: string, save: boolean) {
+    unlockCredentials(password: string, save: boolean) {
         const key = this.decryptData(this.tempKey, password);
         const secret = this.decryptData(this.tempSecret, password);
         if (key.length > 0 && secret.length > 0) {
-            const result = await this.initCredentials(key, secret);
-            if (result) {
-                if (save) localStorage.setItem('SavedPassword', password);
-                this.closeModal('input-password');
-                return;
-            }
+            this.initCredentials(key, secret).then(
+                (result) => {
+                    if (save) localStorage.setItem('SavedPassword', password);
+                    this.closeModal('input-password');
+                    return;
+                },
+                (err) => {
+                    console.warn(err);
+                }
+            );
         }
         this.passwordWrong = true;
     }
 
     async initCredentials(key: string, secret: string): Promise<boolean> {
-        const result = await this.storageService.initKeys(key, secret);
+        const result = await this.globals.storageProvider.initKeys(key, secret);
         if (!result) return false;
-        this.globals.status = 'connected';
+        this.globals.status = 'connectedCredentials';
+        this.zone.run(() => {});
         return true;
     }
 
     registerCredentials(key: string, secret: string, password: string, save: boolean) {
+        this.globals.status = 'registering-wait';
         const safeApiKey = this.encryptData(key, password);
         const safeApiSecret = this.encryptData(secret, password);
         if (save) localStorage.setItem('SavedPassword', password);

@@ -3,31 +3,130 @@ import { Globals } from '../app.globals';
 import { ModalService } from '../_modal';
 
 @Component({
-  selector: 'app-stream',
-  templateUrl: './stream.component.html',
-  styleUrls: ['./stream.component.scss']
+    selector: 'app-stream',
+    templateUrl: './stream.component.html',
+    styleUrls: ['./stream.component.scss'],
 })
 export class StreamComponent implements OnInit {
+    connection = false;
+    hasRecord = false;
+    ENSRecord = '';
+    ENSFailed = false;
 
-  connection = false;
+    play = false;
+    showChat = false;
+    mic = false;
+    video = false;
+    screen = false;
 
-  play = false;
-  showChat = false;
-  mic = false;
-  video = false;
-  screen = false;
+    constructor(public globals: Globals, private modalService: ModalService) {}
 
-  constructor(public globals: Globals, private modalService: ModalService) { }
+    ngOnInit(): void {
+        this.checkENSRecord();
+    }
 
-  ngOnInit(): void {
+    checkENSRecord() {
+        this.globals.ensProvider.lookupAddress(this.globals.address).then(
+            (rName) => {
+                this.hasRecord = rName.length > 0;
+                this.ENSRecord = rName;
+                if (this.hasRecord) this.setNode(rName, false);
+                this.openModal('ens-registry');
+            },
+            (err) => {
+                console.warn(err);
+            }
+        );
+    }
+
+    setENSRecord(hash: string) {
+        this.globals.ensProvider.setTxRecord('stream', hash).then(
+            (tx) => {
+                tx.wait().then((result) => {
+                    console.log(result);
+                    this.connection = true;
+                    this.globals.status = "Ready";
+                    this.closeModal('ens-record');
+                });
+            },
+            (err) => {
+                console.warn(err);
+                this.ENSFailed = true;
+            }
+        );
+        this.closeModal('ens-record');
+    }
+
+    configureENSRecord(name: string) {
+        this.setNode(name);
+        this.globals.ensProvider.lookupNodeAddress().then(
+            (result) => {
+                if (result == '0x0000000000000000000000000000000000000000') this.checkENSRecordOwner();
+                else if (result == this.globals.address) this.hasRecord = true;
+                else this.ENSFailed = true;
+            },
+            (err) => {
+                console.warn(err);
+                this.ENSFailed = true;
+            }
+        );
+    }
+
+  private setNode(name: string, domain = true) {
+    this.globals.ensProvider.setNode(name, domain);
   }
 
-  openModal(id: string) {
-      this.modalService.open(id);
-  }
+    setRecordName() {
+        this.globals.ensProvider.setAddr().then(
+            (tx) => {
+                console.log(tx);
+                tx.wait().then((result) => {
+                    console.log(result);
+                    this.closeModal('ens-registry');
+                    this.openModal('ens-record');
+                });
+            },
+            (err) => {
+                console.warn(err);
+                this.ENSFailed = true;
+            }
+        );
+    }
 
-  closeModal(id: string) {
-      this.modalService.close(id);
-  }
+    checkENSRecordOwner() {
+        this.globals.ensProvider.getOwner().then(
+            (result) => {
+                console.log(result);
+                if (result == '0x0000000000000000000000000000000000000000') {
+                    this.claimENSRecord();
+                } else if (result == this.globals.address) this.setRecordName();
+                else this.ENSFailed = true;
+            },
+            (err) => {
+                console.warn(err);
+                this.ENSFailed = true;
+            }
+        );
+    }
 
+    private claimENSRecord() {
+        this.globals.ensProvider.registerRecord().then(
+            (tx) => {
+                console.log(tx);
+                tx.wait().then(() => this.setRecordName());
+            },
+            (err) => {
+                console.warn(err);
+                this.ENSFailed = true;
+            }
+        );
+    }
+
+    openModal(id: string) {
+        this.modalService.open(id);
+    }
+
+    closeModal(id: string) {
+        this.modalService.close(id);
+    }
 }

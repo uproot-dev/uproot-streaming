@@ -28,7 +28,6 @@ export class FileUploadComponent implements OnInit {
     }
 
     uploadFile() {
-        console.log(this.file);
-        this.globals.storageProvider.upload(this.file, 'Test');
+        const tx = this.globals.storageProvider.upload(this.file, this.file.name);
     }
 }

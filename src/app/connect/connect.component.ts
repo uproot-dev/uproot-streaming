@@ -12,7 +12,7 @@ export class ConnectComponent implements OnInit {
     select = 'none';
     savedState = '';
 
-    constructor(public globals: Globals, private modalService: ModalService, public storageService: StorageService) {}
+    constructor(public globals: Globals, private modalService: ModalService) {}
 
     ngOnInit(): void {}
 
