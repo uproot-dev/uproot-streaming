@@ -25,7 +25,8 @@ export class ENSService {
 
     public setNode(name: string, domain = true) {
         this.name = name;
-        this.node = ethers.utils.namehash(this.name + domain ? this.domain : '');
+        const hashName = domain ? name + this.domain : name;
+        this.node = ethers.utils.namehash(hashName);
     }
 
     public getNodeHash(name: string): string {
@@ -116,7 +117,7 @@ export class ENSService {
         return await contract.setText(_node, key, text);
     }
 
-    public async getTxRecord(_node, key): Promise<string> {
+    public async getTxRecord(key: string, _node = this.node): Promise<string> {
         const contract = await this.getResolverContract(_node, false);
         return await contract.text(_node, key);
     }

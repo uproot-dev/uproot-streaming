@@ -78,16 +78,19 @@ export class WalletComponent implements OnInit {
         if (key.length > 0 && secret.length > 0) {
             this.initCredentials(key, secret).then(
                 (result) => {
+                    if (!result) {
+                      this.passwordWrong = true;
+                      return;
+                    }
                     if (save) localStorage.setItem('SavedPassword', password);
                     this.closeModal('input-password');
-                    return;
                 },
                 (err) => {
                     console.warn(err);
+                    this.passwordWrong = true;
                 }
             );
-        }
-        this.passwordWrong = true;
+        } else this.passwordWrong = true;
     }
 
     async initCredentials(key: string, secret: string): Promise<boolean> {

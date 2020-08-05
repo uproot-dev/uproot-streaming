@@ -14,6 +14,8 @@ import { Globals } from './app.globals';
 import { WalletComponent } from './wallet/wallet.component';
 import { StorageService } from './storage.service';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { StreamBoxComponent } from './stream-box/stream-box.component';
+import { ChatBoxComponent } from './chat-box/chat-box.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     WatchComponent,
     ChatComponent,
     WalletComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    StreamBoxComponent,
+    ChatBoxComponent
   ],
   imports: [
     BrowserModule,

@@ -8,10 +8,11 @@ import { ModalService } from '../_modal';
     styleUrls: ['./stream.component.scss'],
 })
 export class StreamComponent implements OnInit {
-    connection = false;
     hasRecord = false;
     ENSRecord = '';
     ENSFailed = false;
+    hasStream = false;
+    ENSStream = '';
 
     play = false;
     showChat = false;
@@ -43,9 +44,7 @@ export class StreamComponent implements OnInit {
         this.globals.ensProvider.setTxRecord('stream', hash).then(
             (tx) => {
                 tx.wait().then((result) => {
-                    console.log(result);
-                    this.connection = true;
-                    this.globals.status = "Ready";
+                    this.globals.status = 'ready';
                     this.closeModal('ens-record');
                 });
             },
@@ -72,9 +71,26 @@ export class StreamComponent implements OnInit {
         );
     }
 
-  private setNode(name: string, domain = true) {
-    this.globals.ensProvider.setNode(name, domain);
-  }
+    setNode(name: string, domain = true) {
+        this.globals.ensProvider.setNode(name, domain);
+        this.checkStream();
+    }
+
+    checkStream() {
+        this.globals.ensProvider.getTxRecord('stream').then(
+            (record) => {
+              if (record.length > 0){
+                this.ENSStream = record;
+                this.hasStream = true;
+                this.globals.status = 'ready';
+              }
+            },
+            (err) => {
+                console.warn(err);
+                this.ENSFailed = true;
+            }
+        );
+    }
 
     setRecordName() {
         this.globals.ensProvider.setAddr().then(
