@@ -16,14 +16,32 @@ export class StreamComponent implements OnInit {
 
     play = false;
     showChat = false;
-    mic = false;
-    video = false;
-    screen = false;
 
     constructor(public globals: Globals, private modalService: ModalService) {}
 
     ngOnInit(): void {
         this.checkENSRecord();
+
+        // video.js configuration
+        this.globals.playerOptions = {
+            controls: true,
+            fill: true,
+            responsive: true,
+            bigPlayButton: false,
+            plugins: {
+                // configure videojs-record plugin
+                record: {
+                    audio: true,
+                    video: true,
+                    debug: false,
+                    screen: false,
+                    maxLength: 100,
+                    frameWidth: 640,
+                    frameHeight: 480,
+                    timeSlice: 5000,
+                },
+            },
+        };
     }
 
     checkENSRecord() {
@@ -79,11 +97,11 @@ export class StreamComponent implements OnInit {
     checkStream() {
         this.globals.ensProvider.getTxRecord('stream').then(
             (record) => {
-              if (record.length > 0){
-                this.ENSStream = record;
-                this.hasStream = true;
-                this.globals.status = 'ready';
-              }
+                if (record.length > 0) {
+                    this.ENSStream = record;
+                    this.hasStream = true;
+                    this.globals.status = 'ready';
+                }
             },
             (err) => {
                 console.warn(err);
@@ -144,5 +162,51 @@ export class StreamComponent implements OnInit {
 
     closeModal(id: string) {
         this.modalService.close(id);
+    }
+
+    startRecord() {
+      this.openModal('start-record');
+    }
+
+    playRecord() {
+        this.globals.player.record().loadOptions(this.globals.playerOptions);
+        try {
+            this.globals.player.record().start();
+            this.play = !this.play;
+        } catch (err) {}
+    }
+
+    stopRecord() {
+      this.openModal('stop-record');
+    }
+
+    killRecord() {
+        this.play = !this.play;
+        this.globals.player.record().stop();
+        this.globals.player.record().stopDevice();
+    }
+
+    mic() {
+        return this.globals.playerOptions.plugins.record.audio;
+    }
+
+    video() {
+        return this.globals.playerOptions.plugins.record.video;
+    }
+
+    screen() {
+        return this.globals.playerOptions.plugins.record.screen;
+    }
+
+    toggleAudio() {
+        this.globals.playerOptions.plugins.record.audio = !this.globals.playerOptions.plugins.record.audio;
+    }
+
+    toggleVideo() {
+        this.globals.playerOptions.plugins.record.video = !this.globals.playerOptions.plugins.record.video;
+    }
+
+    toggleScreen() {
+        this.globals.playerOptions.plugins.record.screen = !this.globals.playerOptions.plugins.record.screen;
     }
 }
