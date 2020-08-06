@@ -1,1 +1,23 @@
-<p>watch works!</p>
+<div class="container">
+    <div class="header">
+        <div class="bg-default border-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 py-2">
+                        <p class="text-white" style="text-align: right;">Connection status: {{ globals.status }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <br /><br /><br /><br /><br /><br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-body bg-default">
+                  <app-watch-file-list></app-watch-file-list>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

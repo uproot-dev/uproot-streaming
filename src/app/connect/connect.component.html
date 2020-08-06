@@ -14,6 +14,12 @@
                         </a>
                         <div *ngIf="select == 'conect'" class="row mt-2">
                             <div class="col-md-12">
+                                <div *ngIf="connectError" class="alert alert-default" style="text-align: center;" role="alert">
+                                    <strong class="text-bold text-white">Please provide a valid address</strong>
+                                </div>
+                                <div *ngIf="globals.status != 'connected'" class="alert alert-default" style="text-align: center;" role="alert">
+                                    <strong class="text-bold text-white">Please connect your wallet to proceed</strong>
+                                </div>
                                 <div class="form-group">
                                     <div class="input-group input-group-alternative mb-3 d-flex">
                                         <input id="channelAddress" #channelAddress class="form-control" placeholder="Channel Address" type="text" style="text-align: center;" />

@@ -5,12 +5,17 @@ import { ENSService } from './ens.service';
 @Injectable()
 export class Globals {
     mode = 'connect';
+
     status = 'disconected';
 
     address: string;
+
     provider: any;
+
     storageProvider: StorageService;
+
     ensProvider: ENSService;
+
     player: any;
     playerOptions: {
         controls: boolean;
@@ -30,6 +35,10 @@ export class Globals {
             };
         };
     };
+
+    watchStream: string;
+    watchAddress: string;
+    watchMode: string;
 
     setProvider(provider: any, signer: boolean) {
         this.provider = provider;
