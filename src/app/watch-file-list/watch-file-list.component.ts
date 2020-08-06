@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../app.globals';
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-watch-file-list',
