@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../app.globals';
 import { ModalService } from '../_modal';
-
+import { elliptic } from 'js-umbral';
 @Component({
     selector: 'app-stream',
     templateUrl: './stream.component.html',
@@ -24,10 +24,15 @@ export class StreamComponent implements OnInit {
 
         // video.js configuration
         this.globals.playerOptions = {
-            controls: true,
+            controls: false,
             fill: true,
             responsive: true,
             bigPlayButton: false,
+            children: {
+                controlBar: {
+                    fullscreenToggle: true,
+                },
+            },
             plugins: {
                 // configure videojs-record plugin
                 record: {
@@ -165,7 +170,7 @@ export class StreamComponent implements OnInit {
     }
 
     startRecord() {
-      this.openModal('start-record');
+        this.openModal('start-record');
     }
 
     playRecord() {
@@ -177,7 +182,7 @@ export class StreamComponent implements OnInit {
     }
 
     stopRecord() {
-      this.openModal('stop-record');
+        this.openModal('stop-record');
     }
 
     killRecord() {
@@ -208,5 +213,18 @@ export class StreamComponent implements OnInit {
 
     toggleScreen() {
         this.globals.playerOptions.plugins.record.screen = !this.globals.playerOptions.plugins.record.screen;
+    }
+
+    updateKeys(secret: string) {
+        this.globals.encryptStream = !this.globals.encryptStream;
+        if (this.globals.encryptStream) {
+            if (secret.length == 0 && this.globals.encryptSecret.length > 0) return;
+            const EC = elliptic.ec;
+            var secp256k1 = new EC('secp256k1');
+            this.globals.encryptKeypar = secp256k1.genKeyPair();
+            if (secret.length > 0) this.globals.encryptKeypar._importPrivate(secret);
+            this.globals.encryptKeypar.getPublic();
+            this.globals.encryptSecret = this.globals.encryptKeypar.inspect().slice(11, 75);
+        }
     }
 }

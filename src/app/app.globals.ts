@@ -17,28 +17,15 @@ export class Globals {
     ensProvider: ENSService;
 
     player: any;
-    playerOptions: {
-        controls: boolean;
-        fill: boolean;
-        responsive: boolean;
-        bigPlayButton: boolean;
-        plugins: {
-            record: {
-                audio: boolean;
-                video: boolean;
-                debug: boolean;
-                screen: boolean;
-                maxLength: number;
-                frameWidth: number;
-                frameHeight: number;
-                timeSlice: number;
-            };
-        };
-    };
+    playerOptions: any;
 
     watchStream: string;
     watchAddress: string;
     watchMode: string;
+
+    encryptStream = false;
+    encryptKeypar: any;
+    encryptSecret = '';
 
     setProvider(provider: any, signer: boolean) {
         this.provider = provider;
