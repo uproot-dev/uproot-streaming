@@ -3,7 +3,8 @@ import { formatDate } from '@angular/common';
 import { ModalService } from '../_modal';
 import { Globals } from '../app.globals';
 import { pre } from 'js-umbral';
-import { _decapsulateOriginal } from '../../../node_modules/js-umbral/src/pre.js';
+import { UmbralDEM } from '../../../node_modules/js-umbral/src/dem.js';
+import { _decapsulateOriginal, _encapsulate } from '../../../node_modules/js-umbral/src/pre.js';
 
 @Component({
     selector: 'app-file-upload',
@@ -40,9 +41,21 @@ export class FileUploadComponent implements OnInit {
     async encryptFile(file: File): Promise<File> {
         const contentBuffer = await this.readFileAsync(file);
         const data = new TextEncoder().encode(contentBuffer);
-        const { ciphertext, capsule } = pre.encrypt(this.globals.encryptKeypar.pub, data);
+        let { ciphertext, capsule } = pre.encrypt(this.globals.encryptKeypar.pub, data);
         const name = formatDate(new Date(), 'yyyy-MM-dd_HH-mm-ss_SSS', 'en-US') + '_file';
-        const efile = new File([ciphertext], name, { type: 'application/octet-stream' });
+        capsule.pointE.toJSON = undefined;
+        capsule.pointV.toJSON = undefined;
+        capsule.bnSig.toJSON = undefined;
+        capsule.bnSig.bn.toJSON = undefined;
+        capsule.pointE.curve.toJSON = undefined;
+        capsule.pointE.x.toJSON = undefined;
+        capsule.pointE.y.toJSON = undefined;
+        capsule.pointV.curve.toJSON = undefined;
+        capsule.pointV.x.toJSON = undefined;
+        capsule.pointV.y.toJSON = undefined;
+        const fileInfos = { data: ciphertext, cInfo: { pe: capsule.pointE, pv: capsule.pointV, bn: capsule.bnSig } };
+        const dataString = JSON.stringify(fileInfos).toString();
+        const efile = new File([dataString], name, { type: 'application/octet-stream' });
         return efile;
     }
 
