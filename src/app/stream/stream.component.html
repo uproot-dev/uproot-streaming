@@ -61,7 +61,7 @@
                             <a *ngIf="screen()" (click)="toggleScreen()" class="btn btn-secondary p-2 m-2"
                                 ><span><i class="fa fa-ban" style="font-size: 36px;"></i></span
                             ></a>
-                            <a (click)="(true)" class="btn btn-secondary p-2 m-2"
+                            <a (click)="openModal('setup-keys')" class="btn btn-secondary p-2 m-2"
                                 ><span><i class="fa fa-key" style="font-size: 36px;"></i></span
                             ></a>
                             <a (click)="openModal('file-upload')" class="btn btn-secondary p-2 m-2"
@@ -82,7 +82,7 @@
 </jw-modal>
 <jw-modal id="ens-registry">
     <div class="row justify-content-center">
-        <div class="flex-grow align-content-center">
+        <div class="col-md-12">
             <div class="card card-lift--hover shadow border-0 text-center">
                 <div class="card-header py-2 bg-info">
                     <h6 class="text-white text-uppercase">ENS Credentials</h6>
@@ -107,7 +107,7 @@
 </jw-modal>
 <jw-modal id="ens-config">
     <div class="row justify-content-center">
-        <div class="flex-grow align-content-center">
+        <div class="col-md-12">
             <div class="card card-lift--hover shadow border-0 text-center">
                 <div class="card-header py-2 bg-info">
                     <h6 class="text-white text-uppercase">ENS Credentials</h6>
@@ -137,7 +137,7 @@
 </jw-modal>
 <jw-modal id="ens-record">
     <div class="row justify-content-center">
-        <div class="flex-grow align-content-center">
+        <div class="col-md-12">
             <div class="card card-lift--hover shadow border-0 text-center">
                 <div class="card-header py-2 bg-info">
                     <h6 class="text-white text-uppercase">ENS Record</h6>
@@ -169,7 +169,7 @@
 </jw-modal>
 <jw-modal id="stop-record">
     <div class="row justify-content-center">
-        <div class="flex-grow align-content-center">
+        <div class="col-md-12">
             <div class="card card-lift--hover shadow border-0 text-center">
                 <div class="card-header py-2 bg-info">
                     <h6 class="text-white text-uppercase">Stop Recording?</h6>
@@ -179,27 +179,62 @@
                         <strong class="text-bold text-white">Please confirm stopping the stream</strong>
                     </div>
                     <button class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="closeModal('stop-record')">Cancel</button>
-                    <button class="btn btn-warning btn-fab btn-icon btn-round m-2" (click)="killRecord();closeModal('stop-record')">Confirm</button>
+                    <button class="btn btn-warning btn-fab btn-icon btn-round m-2" (click)="killRecord(); closeModal('stop-record')">Confirm</button>
                 </div>
             </div>
         </div>
     </div>
 </jw-modal>
 <jw-modal id="start-record">
-  <div class="row justify-content-center">
-      <div class="flex-grow align-content-center">
-          <div class="card card-lift--hover shadow border-0 text-center">
-              <div class="card-header py-2 bg-info">
-                  <h6 class="text-white text-uppercase">Start Recording?</h6>
-              </div>
-              <div class="card-body py-2 bg-secondary">
-                  <div class="alert alert-default" style="text-align: center;" role="alert">
-                      <strong class="text-bold text-white">Please confirm starting the stream</strong>
-                  </div>
-                  <button class="btn btn-warning btn-fab btn-icon btn-round m-2" (click)="closeModal('start-record')">Cancel</button>
-                  <button class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="playRecord();closeModal('start-record')">Confirm</button>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">Start Recording?</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <div class="alert alert-default" style="text-align: center;" role="alert">
+                        <strong class="text-bold text-white">Please confirm starting the stream</strong>
+                    </div>
+                    <button class="btn btn-warning btn-fab btn-icon btn-round m-2" (click)="closeModal('start-record')">Cancel</button>
+                    <button class="btn btn-success btn-fab btn-icon btn-round m-2" (click)="playRecord(); closeModal('start-record')">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+<jw-modal id="setup-keys">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card card-lift--hover shadow border-0 text-center">
+                <div class="card-header py-2 bg-info">
+                    <h6 class="text-white text-uppercase">Configure encryption</h6>
+                </div>
+                <div class="card-body py-2 bg-secondary">
+                    <div class="alert alert-default" style="text-align: center;" role="alert">
+                        <strong *ngIf="!globals.encryptStream" class="text-bold text-white">Uploaded files are not being encrypted</strong>
+                        <p *ngIf="globals.encryptStream"><strong class="text-bold text-white">Uploaded files are being encrypted using Umbral from Nucypher</strong></p>
+                        <p *ngIf="globals.encryptStream">
+                            <strong class="text-bold text-white">Configure this information on your classroom private material</strong>
+                        </p>
+                        <p *ngIf="globals.encryptStream">
+                            <strong class="text-bold text-white">Secret: {{ globals.encryptSecret }}</strong>
+                        </p>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="secretKeyInput">Import secret</label>
+                            <input #secretKeyInput type="text" class="form-control" id="secretKeyInput" aria-describedby="Secret key input" placeholder="Secret key" />
+                            <small id="secretKeyInputHelp" class="form-text text-muted">Leave blank to auto generate</small>
+                        </div>
+                    </form>
+                    <button *ngIf="!globals.encryptStream" class="btn btn-success btn-fab btn-icon btn-round l-2" (click)="updateKeys(secretKeyInput.value)">Enable encryption</button>
+                    <button *ngIf="globals.encryptStream" class="btn btn-success btn-fab btn-icon btn-round l-2" (click)="updateKeys('')">Disable encryption</button>
+                </div>
+                <div class="card-footer py-2 bg-info">
+                    <button class="btn btn-secondary btn-fab btn-icon btn-round m-2" (click)="closeModal('setup-keys')">close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </jw-modal>
